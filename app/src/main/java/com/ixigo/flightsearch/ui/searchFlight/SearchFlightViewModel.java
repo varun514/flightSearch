@@ -1,31 +1,29 @@
-package com.ixigo.flightsearch.network;
+package com.ixigo.flightsearch.ui.searchFlight;
 
-import android.content.Context;
-import android.net.ConnectivityManager;
 import android.util.Log;
-import android.widget.TextView;
 
 import com.ixigo.flightsearch.model.DataJson;
-import com.ixigo.flightsearch.model.Flights;
+import com.ixigo.flightsearch.network.JsonApiHolder;
+import com.ixigo.flightsearch.network.JsonApiService;
 
-import java.util.Observable;
+import java.security.KeyPair;
+import java.util.ArrayList;
 
-import javax.xml.transform.Templates;
-
+import androidx.lifecycle.Lifecycle;
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.OnLifecycleEvent;
+import androidx.lifecycle.ViewModel;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class JsonApiService {
-
-    DataJson dataJson;
-    Context context;
-    MutableLiveData<DataJson> mDataJson = new MutableLiveData<DataJson>();
-
-    public MutableLiveData<DataJson> start() {
+public class SearchFlightViewModel extends ViewModel {
+    ArrayList<String> mAirports = new ArrayList<String>();
+    public MutableLiveData<DataJson> mDataJson = new MutableLiveData<>();
+    public void fetchApiData(){
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("https://demo9502422.mockable.io/")
                 .addConverterFactory(GsonConverterFactory.create())
@@ -51,6 +49,6 @@ public class JsonApiService {
                 Log.d("TAG", t.getMessage());
             }
         });
-        return mDataJson;
     }
+
 }
