@@ -35,17 +35,8 @@ public class ShowFlightActivity extends AppCompatActivity {
         binding = ActivityShowFlightsBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         recyclerView = binding.recyclerView;
-
-        //dummy flight data//
-        Flights f = new Flights();
-        f.setAirlineCode("xyz");
-        f.setArrivalTime(13549);
-        f.setOriginCode("kalsdl");
-        f.setDestinationCode("adfhk");
-        flights.add(f);
-
         showFlightAdapter = new ShowFlightAdapter(this,flights);
-        recyclerView.setAdapter(showFlightAdapter);
+        //recyclerView.setAdapter(showFlightAdapter);
         final LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
 
@@ -55,6 +46,7 @@ public class ShowFlightActivity extends AppCompatActivity {
             }
             Log.d("SHOW",flights.size() + "");
             showFlightAdapter.notifyDataSetChanged();
+            recyclerView.setAdapter(showFlightAdapter);
         });
         showFlightVM.fetchApiData();
     }
