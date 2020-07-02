@@ -1,6 +1,7 @@
 package com.ixigo.flightsearch.model;
 
 public class Fares {
+
     private int providerId;
     private int fare;
 

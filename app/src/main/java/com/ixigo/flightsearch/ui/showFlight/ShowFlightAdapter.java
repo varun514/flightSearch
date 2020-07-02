@@ -8,11 +8,14 @@ import android.widget.TextView;
 
 import com.ixigo.flightsearch.R;
 import com.ixigo.flightsearch.model.DataJson;
+import com.ixigo.flightsearch.model.Fares;
 import com.ixigo.flightsearch.model.Flights;
 
 import org.w3c.dom.Text;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -22,12 +25,12 @@ public class ShowFlightAdapter extends RecyclerView.Adapter<ShowFlightAdapter.Sh
     private ArrayList<Flights> flights;
 
     public static class ShowFlightViewAdapter extends RecyclerView.ViewHolder{
-        TextView origin;
-        TextView destination;
+        TextView originToDestination;
+        TextView time;
         public ShowFlightViewAdapter(View v){
             super(v);
-            origin = v.findViewById(R.id.origin);
-            destination = v.findViewById(R.id.destination);
+            originToDestination = v.findViewById(R.id.originToDestination);
+            time = v.findViewById(R.id.time);
         }
     }
 
@@ -48,8 +51,16 @@ public class ShowFlightAdapter extends RecyclerView.Adapter<ShowFlightAdapter.Sh
 
     @Override
     public void onBindViewHolder(@NonNull ShowFlightViewAdapter holder, int position) {
-        holder.origin.setText(flights.get(position).getOriginCode());
-        holder.destination.setText(flights.get(position).getDestinationCode());
+        String originToDestination = flights.get(position).getOriginCode() + " -> " + flights.get(position).getDestinationCode();
+        holder.originToDestination.setText(originToDestination);
+        Date dateDeparture = new Date(flights.get(position).getDepartureTime());
+        Date dateArrival = new Date(flights.get(position).getArrivalTime());
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+        SimpleDateFormat simpleTimeFormat = new SimpleDateFormat("HH:mm:ss");
+        String timeDeparture = simpleDateFormat.format(dateDeparture);
+        String timeArrival = simpleTimeFormat.format(dateArrival);
+        holder.time.setText(timeDeparture + "-" + timeArrival);
+
     }
 
     @Override

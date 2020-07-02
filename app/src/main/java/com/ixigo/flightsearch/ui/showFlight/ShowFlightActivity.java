@@ -30,6 +30,9 @@ public class ShowFlightActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        String origin = getIntent().getStringExtra("origin");
+        String destination = getIntent().getStringExtra("destination");
+
         super.onCreate(savedInstanceState);
         showFlightVM = new ViewModelProvider(this).get(ShowFlightViewModel.class);
         binding = ActivityShowFlightsBinding.inflate(getLayoutInflater());
@@ -42,12 +45,16 @@ public class ShowFlightActivity extends AppCompatActivity {
 
         showFlightVM.mDataJson.observe(this, it -> {
             for(Flights v: it.getFlights()){
-                flights.add(v);
+                if(v.getOriginCode().matches(origin) && v.getDestinationCode().matches(destination))
+                    flights.add(v);
             }
+            Log.d("SHOW",origin);
+            Log.d("SHOW",destination);
             Log.d("SHOW",flights.size() + "");
             showFlightAdapter.notifyDataSetChanged();
             recyclerView.setAdapter(showFlightAdapter);
         });
+
         showFlightVM.fetchApiData();
     }
 }
