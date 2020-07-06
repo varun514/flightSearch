@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.ixigo.flightsearch.R;
+import com.ixigo.flightsearch.model.Appendix;
 import com.ixigo.flightsearch.model.DataJson;
 import com.ixigo.flightsearch.model.Fares;
 import com.ixigo.flightsearch.model.Flights;
@@ -16,6 +17,7 @@ import org.w3c.dom.Text;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -23,20 +25,22 @@ import androidx.recyclerview.widget.RecyclerView;
 public class ShowFlightAdapter extends RecyclerView.Adapter<ShowFlightAdapter.ShowFlightViewAdapter> {
     Context context;
     private ArrayList<Flights> flights;
+    private Appendix appendix;
 
     public static class ShowFlightViewAdapter extends RecyclerView.ViewHolder{
-        TextView originToDestination;
+        TextView airlines;
         TextView time;
         public ShowFlightViewAdapter(View v){
             super(v);
-            originToDestination = v.findViewById(R.id.originToDestination);
+            airlines = v.findViewById(R.id.Airlines);
             time = v.findViewById(R.id.time);
         }
     }
 
-    public ShowFlightAdapter(Context context, ArrayList<Flights> flights){
+    public ShowFlightAdapter(Context context, ArrayList<Flights> flights, Appendix appendix){
         this.context = context;
         this.flights = flights;
+        this.appendix = appendix;
     }
 
 
@@ -51,8 +55,8 @@ public class ShowFlightAdapter extends RecyclerView.Adapter<ShowFlightAdapter.Sh
 
     @Override
     public void onBindViewHolder(@NonNull ShowFlightViewAdapter holder, int position) {
-        String originToDestination = flights.get(position).getOriginCode() + " -> " + flights.get(position).getDestinationCode();
-        holder.originToDestination.setText(originToDestination);
+        String airlines= appendix.getAirlines().get(flights.get(position).getAirlineCode());
+        holder.airlines.setText(airlines);
         Date dateDeparture = new Date(flights.get(position).getDepartureTime());
         Date dateArrival = new Date(flights.get(position).getArrivalTime());
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
@@ -67,8 +71,9 @@ public class ShowFlightAdapter extends RecyclerView.Adapter<ShowFlightAdapter.Sh
         return flights.size();
     }
 
-    public void setAdapterData(ArrayList<Flights> flights){
+    public void setAdapterData(ArrayList<Flights> flights,Appendix appendix){
         this.flights = flights;
+        this.appendix = appendix;
         notifyDataSetChanged();
     }
 }
