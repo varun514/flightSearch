@@ -36,10 +36,12 @@ public class ShowFlightActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         showFlightVM = new ViewModelProvider(this).get(ShowFlightViewModel.class);
         binding = ActivityShowFlightsBinding.inflate(getLayoutInflater());
+        binding.from.setText(origin);
+        binding.to.setText(destination);
         setContentView(binding.getRoot());
         recyclerView = binding.recyclerView;
         showFlightAdapter = new ShowFlightAdapter(this,flights);
-        //recyclerView.setAdapter(showFlightAdapter);
+        recyclerView.setAdapter(showFlightAdapter);
         final LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
 
@@ -51,8 +53,7 @@ public class ShowFlightActivity extends AppCompatActivity {
             Log.d("SHOW",origin);
             Log.d("SHOW",destination);
             Log.d("SHOW",flights.size() + "");
-            showFlightAdapter.notifyDataSetChanged();
-            recyclerView.setAdapter(showFlightAdapter);
+            showFlightAdapter.setAdapterData(flights);
         });
 
         showFlightVM.fetchApiData();

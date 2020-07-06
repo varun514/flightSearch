@@ -60,11 +60,15 @@ public class ShowFlightAdapter extends RecyclerView.Adapter<ShowFlightAdapter.Sh
         String timeDeparture = simpleDateFormat.format(dateDeparture);
         String timeArrival = simpleTimeFormat.format(dateArrival);
         holder.time.setText(timeDeparture + "-" + timeArrival);
-
     }
 
     @Override
     public int getItemCount() {
         return flights.size();
+    }
+
+    public void setAdapterData(ArrayList<Flights> flights){
+        this.flights = flights;
+        notifyDataSetChanged();
     }
 }

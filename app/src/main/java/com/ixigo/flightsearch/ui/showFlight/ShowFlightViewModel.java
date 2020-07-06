@@ -22,7 +22,7 @@ public class ShowFlightViewModel extends ViewModel {
     private DataJson dataJson;
     public void fetchApiData() {
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("https://demo9502422.mockable.io/")
+                .baseUrl("https://demo2961096.mockable.io/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 

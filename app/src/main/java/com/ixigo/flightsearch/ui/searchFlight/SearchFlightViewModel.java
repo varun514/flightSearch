@@ -25,7 +25,7 @@ public class SearchFlightViewModel extends ViewModel {
     public MutableLiveData<DataJson> mDataJson = new MutableLiveData<>();
     public void fetchApiData(){
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("https://demo9502422.mockable.io/")
+                .baseUrl("https://demo2961096.mockable.io/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 

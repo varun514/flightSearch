@@ -40,6 +40,7 @@ public class SearchFlightActivity extends AppCompatActivity {
             for(String v : airports.keySet()){
                 mAirports.add(v+":"+airports.get(v));
             }
+            //
             arrayAdapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,mAirports);
             binding.origin.setAdapter(arrayAdapter);
             binding.destination.setAdapter(arrayAdapter);
