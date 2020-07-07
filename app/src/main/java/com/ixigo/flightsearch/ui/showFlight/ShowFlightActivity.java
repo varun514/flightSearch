@@ -13,6 +13,7 @@ import android.view.View;
 import com.ixigo.flightsearch.databinding.ActivityShowFlightsBinding;
 import com.ixigo.flightsearch.model.Appendix;
 import com.ixigo.flightsearch.model.DataJson;
+import com.ixigo.flightsearch.model.Fares;
 import com.ixigo.flightsearch.model.Flights;
 
 import java.util.ArrayList;
@@ -41,30 +42,35 @@ public class ShowFlightActivity extends AppCompatActivity {
         binding.to.setText(destination);
         setContentView(binding.getRoot());
         recyclerView = binding.recyclerView;
-        showFlightAdapter = new ShowFlightAdapter(this,flights,appendix);
+        showFlightAdapter = new ShowFlightAdapter(this, flights, appendix);
         recyclerView.setAdapter(showFlightAdapter);
         final LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
 
         showFlightVM.mDataJson.observe(this, it -> {
-            for(Flights v: it.getFlights()){
-                if(v.getOriginCode().matches(origin) && v.getDestinationCode().matches(destination))
-                    flights.add(v);
+            for (Flights v : it.getFlights()) {
+                if (v.getOriginCode().matches(origin) && v.getDestinationCode().matches(destination))
+                    if (v.getFares().size() > 1) {
+                        Collections.sort(v.getFares(), comparatorFare());
+                    }
+                flights.add(v);
             }
             appendix.setAirlines(it.getAppendix().getAirlines());
             appendix.setAirports(it.getAppendix().getAirports());
             appendix.setProviders(it.getAppendix().getProviders());
-            Log.d("SHOW",origin);
-            Log.d("SHOW",destination);
-            Log.d("SHOW",flights.size() + "");
-            showFlightAdapter.setAdapterData(flights,appendix);
+
+            Log.d("SHOW", origin);
+            Log.d("SHOW", destination);
+            Log.d("SHOW", flights.size() + "");
+            //showFlightAdapter.setAdapterData(flights, appendix);
+            showFlightAdapter.notifyDataSetChanged();
         });
         binding.departure.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(flights!=null){
-                    Collections.sort(flights,comparatorTime());
-                    showFlightAdapter.setAdapterData(flights,appendix);
+                if (flights != null) {
+                    Collections.sort(flights, comparatorDepartureTime());
+                    showFlightAdapter.setAdapterData(flights, appendix);
                 }
             }
         });
@@ -72,18 +78,55 @@ public class ShowFlightActivity extends AppCompatActivity {
         binding.arrival.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(flights!=null){
-                    Collections.sort(flights,comparatorTime());
-                    showFlightAdapter.setAdapterData(flights,appendix);
+                if (flights != null) {
+                    Collections.sort(flights, comparatorArrivalTime());
+                    showFlightAdapter.setAdapterData(flights, appendix);
+                }
+            }
+        });
+
+        binding.price.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (flights != null) {
+                    Collections.sort(flights, comparatorPrice());
+                    showFlightAdapter.setAdapterData(flights, appendix);
                 }
             }
         });
     }
 
-    private static Comparator<Flights> comparatorTime(){
+    private static Comparator<Flights> comparatorArrivalTime() {
         Comparator comp = new Comparator<Flights>() {
             public int compare(Flights o1, Flights o2) {
                 return (int) (o1.getArrivalTime() - o2.getArrivalTime());
+            }
+        };
+        return comp;
+    }
+
+    private static Comparator<Flights> comparatorDepartureTime() {
+        Comparator comp = new Comparator<Flights>() {
+            public int compare(Flights o1, Flights o2) {
+                return (int) (o1.getDepartureTime() - o2.getDepartureTime());
+            }
+        };
+        return comp;
+    }
+
+    private static Comparator<Fares> comparatorFare() {
+        Comparator comp = new Comparator<Fares>() {
+            public int compare(Fares o1, Fares o2) {
+                return o1.getFare() - o2.getFare();
+            }
+        };
+        return comp;
+    }
+
+    private static Comparator<Flights> comparatorPrice() {
+        Comparator comp = new Comparator<Flights>() {
+            public int compare(Flights o1, Flights o2) {
+                return o1.getFares().get(0).getFare() - o2.getFares().get(0).getFare();
             }
         };
         return comp;

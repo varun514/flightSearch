@@ -26,12 +26,12 @@ public class SearchFlightActivity extends AppCompatActivity {
     private SearchFlightViewModel searchFlightViewModel;
     private DataJson dataJson;
     HashMap<String,String> airports;
-    ArrayList<String> mAirports = new ArrayList<>();
     ArrayAdapter<String> arrayAdapter;
     @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        ArrayList<String> mAirports = new ArrayList<>();
         searchFlightViewModel = new ViewModelProvider(this).get(SearchFlightViewModel.class);
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());

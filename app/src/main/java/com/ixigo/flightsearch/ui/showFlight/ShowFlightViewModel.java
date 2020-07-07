@@ -18,7 +18,7 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ShowFlightViewModel extends ViewModel {
-    public MutableLiveData<DataJson> mDataJson = new MutableLiveData<DataJson>();
+    public MutableLiveData<DataJson> mDataJson = new MutableLiveData();
     private DataJson dataJson;
     public void fetchApiData() {
         Retrofit retrofit = new Retrofit.Builder()

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.ixigo.flightsearch.R;
@@ -16,6 +17,8 @@ import org.w3c.dom.Text;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 
@@ -27,35 +30,40 @@ public class ShowFlightAdapter extends RecyclerView.Adapter<ShowFlightAdapter.Sh
     private ArrayList<Flights> flights;
     private Appendix appendix;
 
-    public static class ShowFlightViewAdapter extends RecyclerView.ViewHolder{
+    public static class ShowFlightViewAdapter extends RecyclerView.ViewHolder implements View.OnClickListener {
         TextView airlines;
         TextView time;
-        public ShowFlightViewAdapter(View v){
+        TextView price;
+        public ShowFlightViewAdapter(View v) {
             super(v);
             airlines = v.findViewById(R.id.Airlines);
             time = v.findViewById(R.id.time);
+            price = v.findViewById(R.id.price);
+        }
+
+        @Override
+        public void onClick(View v) {
         }
     }
 
-    public ShowFlightAdapter(Context context, ArrayList<Flights> flights, Appendix appendix){
+    public ShowFlightAdapter(Context context, ArrayList<Flights> flights, Appendix appendix) {
         this.context = context;
         this.flights = flights;
         this.appendix = appendix;
     }
 
 
-
     @NonNull
     @Override
     public ShowFlightAdapter.ShowFlightViewAdapter onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_flight,parent,false);
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_flight2, parent, false);
         ShowFlightViewAdapter showFlightViewAdapter = new ShowFlightViewAdapter(v);
         return showFlightViewAdapter;
     }
 
     @Override
     public void onBindViewHolder(@NonNull ShowFlightViewAdapter holder, int position) {
-        String airlines= appendix.getAirlines().get(flights.get(position).getAirlineCode());
+        String airlines = appendix.getAirlines().get(flights.get(position).getAirlineCode());
         holder.airlines.setText(airlines);
         Date dateDeparture = new Date(flights.get(position).getDepartureTime());
         Date dateArrival = new Date(flights.get(position).getArrivalTime());
@@ -64,6 +72,8 @@ public class ShowFlightAdapter extends RecyclerView.Adapter<ShowFlightAdapter.Sh
         String timeDeparture = simpleDateFormat.format(dateDeparture);
         String timeArrival = simpleTimeFormat.format(dateArrival);
         holder.time.setText(timeDeparture + "-" + timeArrival);
+        String provider = appendix.getProviders().get(""+flights.get(position).getFares().get(0).getProviderId());
+        holder.price.setText( provider+ "=" + flights.get(position).getFares().get(0).getFare());
     }
 
     @Override
@@ -71,9 +81,9 @@ public class ShowFlightAdapter extends RecyclerView.Adapter<ShowFlightAdapter.Sh
         return flights.size();
     }
 
-    public void setAdapterData(ArrayList<Flights> flights,Appendix appendix){
+    public void setAdapterData(ArrayList<Flights> flights, Appendix appendix) {
         this.flights = flights;
         this.appendix = appendix;
-        notifyDataSetChanged();
     }
+
 }

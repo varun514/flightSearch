@@ -6,6 +6,7 @@
     android:layout_marginBottom="4dp">
 
     <LinearLayout
+        android:id="@+id/linearlayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_margin="4dp"
@@ -24,10 +25,18 @@
             android:id="@+id/time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_toEndOf="@+id/Airlines"
             android:textSize="20sp"
             android:textStyle="bold">
+
+        </TextView>
+
+        <TextView
+            android:id="@+id/price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="20sp"
+            android:textStyle="bold">
+
         </TextView>
 
     </LinearLayout>
